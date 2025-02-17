@@ -9,7 +9,7 @@ app.secret_key = 'your_secret_key'
 def validate_input(value):
     return re.match(r'^[A-Z0-9_][A-Z0-9._-]*[A-Z0-9_]$', value) is not None
 
-# Function to generate MQSC script
+# Function to generate MQSC scripts
 def generate_mqsc(names, selected_object, qmgr_name):
     errors = []
     max_length = 48 if "Queue" in selected_object else 20
