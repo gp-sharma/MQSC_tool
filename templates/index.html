@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNB MQ Script Generator Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>DNB MQ Script Generator Tool</h1>
+        <form action="{{ url_for('index') }}" method="post">
+            <div class="form-group">
+                <label for="mq_object_type">Select MQ Object Type:</label>
+                <select name="mq_object_type" id="mq_object_type">
+                    {% for type in mq_object_types %}
+                        <option value="{{ type }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="qmgr_name">Enter QMGR Name:</label>
+                <input type="text" name="qmgr_name" id="qmgr_name" required>
+            </div>
+            <div class="form-group">
+                <label for="names">Enter Names (one per line):</label>
+                <textarea name="names" id="names" rows="10" cols="50" required></textarea>
+            </div>
+            <button type="submit" class="btn">Generate MQSC</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% if scripts %}
+            <h2>Generated MQSC Scripts</h2>
+            <pre>{% for script in scripts %}{{ script }}{% endfor %}</pre>
+            <form action="{{ url_for('download') }}" method="post" style="display: inline;">
+                <button type="submit" class="btn">Save As</button>
+            </form>
+            <form action="{{ url_for('clear') }}" method="post" style="display: inline;">
+                <button type="submit" class="btn">Clear</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
